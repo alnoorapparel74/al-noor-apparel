@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AL NOOR APPAREL - Admin Panel</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <h1>AL NOOR APPAREL</h1>
+
+    <p>Admin Panel</p>
+
+</header>
+
+
+<main class="admin-container">
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <section class="admin-card">
+
+        <h2>Dashboard</h2>
+
+        <p>
+            Welcome to AL NOOR APPAREL Admin Panel.
+        </p>
+
+    </section>
+
+
+    
+
+    <!-- ================= ADD PRODUCT ================= -->
+
+    <section class="admin-card">
+
+        <h2>Add Product</h2>
+
+
+        <label for="productName">
+            Product Name
+        </label>
+
+        <input
+            type="text"
+            id="productName"
+            placeholder="Enter product name"
+        >
+
+
+        <label for="productCategory">
+            Category
+        </label>
+
+        <select id="productCategory">
+
+            <option value="">
+                Select Category
+            </option>
+
+            <option value="Shirts">
+                Shirts
+            </option>
+
+            <option value="Pants">
+                Pants
+            </option>
+
+            <option value="Trousers">
+                Trousers
+            </option>
+
+            <option value="Waistcoats">
+                Waistcoats
+            </option>
+
+            <option value="Jackets">
+                Jackets
+            </option>
+
+            <option value="Handmade Woolen Shawls">
+                Handmade Woolen Shawls
+            </option>
+
+            <option value="Wool Sweaters">
+                Wool Sweaters
+            </option>
+
+            <option value="Baby Collection">
+                Baby Collection
+            </option>
+
+            <option value="Swati Pakol (Cap)">
+                Swati Pakol (Cap)
+            </option>
+
+            <option value="Perfumes">
+                Perfumes
+            </option>
+
+            <option value="Watches">
+                Watches
+            </option>
+
+        </select>
+
+<!-- ================= COLLECTION ================= -->
+
+<label>
+    Collection
+</label>
+
+<div class="collection-options">
+
+    <label>
+        <input type="checkbox" id="summerCollection">
+        Summer Collection
+    </label>
+
+    <label>
+        <input type="checkbox" id="winterCollection">
+        Winter Collection
+    </label>
+
+    <label>
+        <input type="checkbox" id="newArrival">
+        New Arrivals
+    </label>
+
+</div>
+
+       <label for="productSize" id="productSizeLabel">
+    Size
+</label>
+
+<input
+    type="text"
+    id="productSize"
+    placeholder="Enter size e.g. M, L, XL, XXL"
+>
+
+        <label for="productPrice">
+            Price
+        </label>
+
+        <input
+            type="number"
+            id="productPrice"
+            placeholder="Enter price"
+        >
+
+
+        <label for="productImage">
+            Product Image
+        </label>
+
+        <input
+            type="file"
+            id="productImage"
+            accept="image/*"
+       
+
+        <label for="productDescription">
+            Description
+        </label>
+
+        <textarea
+            id="productDescription"
+            placeholder="Enter product description"
+        ></textarea>
+
+
+        <button
+            id="addProductBtn"
+            type="button"
+        >
+            Add Product
+        </button>
+
+    </section>
+
+
+
+    <!-- ================= SAVED PRODUCTS ================= -->
+
+    <section class="admin-card">
+
+        <div id="savedProducts">
+
+            <h2>Saved Products</h2>
+
+
+            <div class="category-filter">
+
+                <button data-category="All">
+                    All
+                </button>
+
+                <button data-category="Shirts">
+                    Shirts
+                </button>
+
+                <button data-category="Pants">
+                    Pants
+                </button>
+
+                <button data-category="Trousers">
+                    Trousers
+                </button>
+
+                <button data-category="Waistcoats">
+                    Waistcoats
+                </button>
+
+                <button data-category="Jackets">
+                    Jackets
+                </button>
+
+                <button data-category="Handmade Woolen Shawls">
+                    Handmade Woolen Shawls
+                </button>
+
+                <button data-category="Wool Sweaters">
+                    Wool Sweaters
+                </button>
+
+                <button data-category="Baby Collection">
+                    Baby Collection
+                </button>
+
+                <button data-category="Swati Pakol (Cap)">
+                    Swati Pakol (Cap)
+                </button>
+
+                <button data-category="Perfumes">
+                    Perfumes
+                </button>
+
+                <button data-category="Watches">
+                    Watches
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= ORDERS ================= -->
+
+    <section class="admin-card">
+
+        <h2>Orders</h2>
+
+        <p>
+            Orders management will be added here.
+        </p>
+
+    </section>
+
+
+
+    <!-- ================= SETTINGS ================= -->
+
+    <section class="admin-card">
+
+        <h2>Settings</h2>
+
+        <p>
+            Admin settings will be added here.
+        </p>
+
+    </section>
+
+
+</main>
+<!-- ================= SUPABASE ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://gbyuxveowklqcgyfowko.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wVrexfeejkvvzg23nBBcqw_Uurnyv_B";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function showSavedProducts() {
+    const container = document.getElementById("savedProducts");
+    container.innerHTML = "<h2>Saved Products</h2>";
+
+    const { data: products, error } = await supabaseClient
+        .from("products").select("*").order("id", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        container.innerHTML += "<p>Products load nahi ho rahe: " + error.message + "</p>";
+        return;
+    }
+
+    if (!products || products.length === 0) {
+        container.innerHTML += "<p>No products added yet.</p>";
+        return;
+    }
+
+    const categories = {};
+    products.forEach(product => {
+        const category = product.category || "Uncategorized";
+        if (!categories[category]) categories[category] = [];
+        categories[category].push(product);
+    });
+
+    Object.keys(categories).forEach(category => {
+        const categoryBox = document.createElement("div");
+        categoryBox.className = "admin-category-box";
+        categoryBox.innerHTML = `
+            <div class="admin-category-title">
+                ${category}
+                <span>${categories[category].length} Products</span>
+            </div>
+            <div class="admin-category-products"></div>
+        `;
+
+        const productsContainer = categoryBox.querySelector(".admin-category-products");
+
+        categories[category].forEach(product => {
+            const productItem = document.createElement("div");
+            productItem.className = "admin-product-item";
+            productItem.innerHTML = `
+                <div class="admin-product-image">
+                    ${product.image ? `<img src="${product.image}" alt="${product.name || ""}">` : ""}
+                </div>
+                <div class="admin-product-info">
+                    <h3>${product.name || ""}</h3>
+                    <p>Size: <strong>${product.size || ""}</strong></p>
+                    <p>Price: <strong>Rs. ${product.price ?? ""}</strong></p>
+                    <p>${product.description || ""}</p>
+                    <div class="product-actions">
+                        <button type="button" onclick="editProduct(${product.id})">Edit</button>
+                        <button type="button" onclick="deleteProduct(${product.id})">Delete</button>
+                    </div>
+                </div>
+            `;
+            productsContainer.appendChild(productItem);
+        });
+
+        container.appendChild(categoryBox);
+    });
+}
+
+async function editProduct(id) {
+
+    const { data: product, error } =
+        await supabaseClient
+            .from("products")
+            .select("*")
+            .eq("id", id)
+            .single();
+
+    if (error) {
+        console.error(error);
+        alert("Product load nahi hua: " + error.message);
+        return;
+    }
+
+    const newName =
+        prompt("Product Name:", product.name || "");
+    if (newName === null) return;
+
+    const newPrice =
+        prompt("Price:", product.price ?? "");
+    if (newPrice === null) return;
+
+    const newSize =
+        prompt("Size:", product.size || "");
+    if (newSize === null) return;
+
+    const newCategory =
+        prompt("Category:", product.category || "");
+    if (newCategory === null) return;
+
+    const newDescription =
+        prompt("Description:", product.description || "");
+    if (newDescription === null) return;
+
+    const name = newName.trim();
+    const price = Number(newPrice.trim());
+    const size = newSize.trim();
+    const category = newCategory.trim();
+ const description = newDescription.trim();
+
+if (!name || !category || !Number.isFinite(price)) {
+    alert("Product Name, valid Price aur Category required hain.");
+    return;
+}
+
+let imageUrl = product.image || "";
+
+let newImageFile = null;
+
+const imageInput =
+    document.getElementById("productImage");
+
+imageInput.value = "";
+
+const changeImage = await new Promise(resolve => {
+
+    const box = document.createElement("div");
+
+    box.innerHTML = `
+        <div style="position:fixed;inset:0;background:#0008;
+        display:flex;align-items:center;justify-content:center;
+        z-index:99999;">
+            <div style="background:#1a1a1a;padding:25px;
+            border-radius:15px;text-align:center;color:white;">
+                <h3>Change Product Image?</h3>
+                <button id="imageOK">OK</button>
+                <button id="imageCancel">Cancel</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(box);
+
+    box.querySelector("#imageOK").onclick = () => {
+        box.remove();
+
+        imageInput.onchange = () => resolve(true);
+        imageInput.oncancel = () => resolve(false);
+
+        imageInput.click();
+    };
+
+    box.querySelector("#imageCancel").onclick = () => {
+        box.remove();
+        resolve(false);
+    };
+});
+
+if (changeImage && imageInput.files.length > 0) {
+    newImageFile = imageInput.files[0];
+}
+
+
+if (imageInput && imageInput.files.length > 0) {
+    newImageFile = imageInput.files[0];
+
+    if (newImageFile) {
+
+            const fileExtension =
+                newImageFile.name.split(".").pop();
+
+            const safeName =
+                name
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/^-+|-+$/g, "");
+
+            const fileName =
+                safeName +
+                "-" +
+                Date.now() +
+                "." +
+                fileExtension;
+
+            const { error: uploadError } =
+                await supabaseClient
+                    .storage
+                    .from("product-images")
+                    .upload(
+                        fileName,
+                        newImageFile,
+                        {
+                            cacheControl: "31536000",
+                            upsert: false
+                        }
+                    );
+
+            if (uploadError) {
+                console.error(uploadError);
+                alert(
+                    "New image upload nahi hui: " +
+                    uploadError.message
+                );
+                return;
+            }
+
+            const { data: publicUrlData } =
+                supabaseClient
+                    .storage
+                    .from("product-images")
+                    .getPublicUrl(fileName);
+
+            imageUrl = publicUrlData.publicUrl;
+        }
+    }
+
+    const { error: updateError } =
+        await supabaseClient
+            .from("products")
+            .update({
+                name: name,
+                price: price,
+                size: size,
+                category: category,
+                description: description,
+                image: imageUrl
+            })
+            .eq("id", id);
+
+    if (updateError) {
+        console.error(updateError);
+        alert(
+            "Product update nahi hua: " +
+            updateError.message
+        );
+        return;
+    }
+
+    document.getElementById("productImage").value = "";
+
+    await showSavedProducts();
+
+    alert("Product Updated Successfully!");
+}
+
+async function deleteProduct(id) {
+    if (!confirm("Delete this product?")) return;
+
+    const { error } = await supabaseClient
+        .from("products").delete().eq("id", id);
+
+    if (error) {
+        console.error(error);
+        alert("Product delete nahi hua: " + error.message);
+        return;
+    }
+
+    await showSavedProducts();
+    alert("Product Deleted Successfully!");
+}
+
+const addProductBtn = document.getElementById("addProductBtn");
+
+addProductBtn.addEventListener("click", async function () {
+
+    const name =
+        document.getElementById("productName").value.trim();
+
+    const price =
+        document.getElementById("productPrice").value.trim();
+
+    const size =
+        document.getElementById("productSize").value.trim();
+
+    const category =
+        document.getElementById("productCategory").value.trim();
+
+    const description =
+        document.getElementById("productDescription").value.trim();
+
+const summer = document.getElementById("summerCollection").checked;
+const winter = document.getElementById("winterCollection").checked;
+const newArrival = document.getElementById("newArrival").checked;
+
+    const imageFile =
+        document.getElementById("productImage").files[0];
+
+
+    if (!name || !price || !category) {
+        alert("Please enter Product Name, Price and Category.");
+        return;
+    }
+
+
+    if (!Number.isFinite(Number(price))) {
+        alert("Price number hona chahiye.");
+        return;
+    }
+
+
+    if (!imageFile) {
+        alert("Please select a product image.");
+        return;
+    }
+
+
+    /* =========================
+       UPLOAD IMAGE TO STORAGE
+       ========================= */
+
+    const fileExtension =
+        imageFile.name.split(".").pop();
+
+    const safeName =
+        name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+
+    const fileName =
+        safeName +
+        "-" +
+        Date.now() +
+        "." +
+        fileExtension;
+
+
+    const filePath =
+        fileName;
+
+
+    const { error: uploadError } =
+        await supabaseClient
+            .storage
+            .from("product-images")
+            .upload(filePath, imageFile, {
+                cacheControl: "31536000",
+                upsert: false
+            });
+
+
+    if (uploadError) {
+
+        console.error(uploadError);
+
+        alert(
+            "Image upload nahi hui: " +
+            uploadError.message
+        );
+
+        return;
+    }
+
+
+    /* =========================
+       GET PUBLIC IMAGE URL
+       ========================= */
+
+    const { data: publicUrlData } =
+        supabaseClient
+            .storage
+            .from("product-images")
+            .getPublicUrl(filePath);
+
+
+    const imageUrl =
+        publicUrlData.publicUrl;
+
+
+      const { error } =
+        await supabaseClient
+            .from("products")
+            .insert([{
+
+                name: name,
+
+                size: size,
+
+                price: Number(price),
+
+                category: category,
+
+                description: description,
+
+                image: imageUrl,
+
+                summer: summer,
+
+                winter: winter,
+
+                new_arrival: newArrival
+
+            }]);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Product save nahi hua: " +
+            error.message
+        );
+
+        return;
+    }
+
+
+    /* =========================
+       CLEAR FORM
+       ========================= */
+
+    document.getElementById("productName").value = "";
+
+    document.getElementById("productPrice").value = "";
+
+    document.getElementById("productSize").value = "";
+
+    document.getElementById("productCategory").value = "";
+
+    document.getElementById("productDescription").value = "";
+
+    document.getElementById("productImage").value = "";
+
+document.getElementById("summerCollection").checked = false;
+document.getElementById("winterCollection").checked = false;
+document.getElementById("newArrival").checked = false;
+
+    await showSavedProducts();
+
+    alert("Product Added Successfully!");
+
+});
+
+showSavedProducts();
+const productCategory = document.getElementById("productCategory");
+const productSizeLabel = document.getElementById("productSizeLabel");
+const productSize = document.getElementById("productSize");
+
+productCategory.addEventListener("change", function () {
+
+    if (this.value === "Watches") {
+        productSizeLabel.style.display = "none";
+        productSize.style.display = "none";
+        productSize.value = "";
+
+    } else if (this.value === "Perfumes") {
+        productSizeLabel.style.display = "block";
+        productSize.style.display = "block";
+        productSizeLabel.textContent = "Fragrance Size";
+        productSize.placeholder = "Enter fragrance size e.g. 50ml, 100ml";
+
+    } else {
+        productSizeLabel.style.display = "block";
+        productSize.style.display = "block";
+        productSizeLabel.textContent = "Size";
+        productSize.placeholder = "Enter size e.g. M, L, XL, XXL";
+    }
+
+});
+</script>
+</body>
+
+</html>
