@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trousers | AL NOOR APPAREL</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="announcement-bar">
+        <p>🚚 Free Delivery on Orders | Premium Quality Guaranteed</p>
+    </div>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            <a href="index.html">
+                <img src="image/logo/logo.png" alt="AL NOOR APPAREL">
+            </a>
+        </div>
+
+        <div class="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>Trousers Collection</h1>
+
+        <p>Discover our premium trousers collection.</p>
+
+        <a href="#trousers-products" class="hero-btn">
+            Shop Now
+        </a>
+
+    </div>
+
+</section>
+
+
+<section id="trousers-products" class="products-section">
+
+    <div class="section-title">
+
+        <h2>Our Trousers</h2>
+
+        <p>Choose your favorite premium trousers.</p>
+
+    </div>
+
+
+<div class="products-container" id="trousersProducts">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+    "https://gbyuxveowklqcgyfowko.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_wVrexfeejkvvzg23nBBcqw_Uurnyv_B";
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
+
+        const container =
+            document.getElementById("trousersProducts");
+
+
+        const { data: products, error } =
+            await supabaseClient
+                .from("products")
+                .select("*")
+                .eq("category", "Trousers")
+                .order("id", {
+                    ascending: false
+                });
+
+
+        if (error) {
+
+            console.error(error);
+
+            container.innerHTML =
+                "<p>Products load nahi ho rahe.</p>";
+
+            return;
+        }
+
+
+        if (!products || products.length === 0) {
+
+            container.innerHTML =
+                "<p>No trousers available.</p>";
+
+            return;
+        }
+
+
+        products.forEach(function (product) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "product-card";
+
+
+            card.innerHTML = `
+
+                <img
+                    src="${product.image || ""}"
+                    alt="${product.name || ""}"
+                >
+
+                <h3>
+                    ${product.name || ""}
+                </h3>
+
+                <p>
+                    ${product.description || ""}
+                </p>
+
+                <p>
+                    Size: ${product.size || ""}
+                </p>
+
+                <p>
+                    Price: Rs. ${product.price ?? ""}
+                </p>
+
+                <a
+                    href="https://wa.me/923402787575?text=${encodeURIComponent(
+                        "Hello AL NOOR APPAREL, I want to order: " +
+                        product.name
+                    )}"
+                    class="product-btn"
+                    target="_blank"
+                >
+                    Order Now
+                </a>
+
+            `;
+
+
+            container.appendChild(card);
+
+        });
+
+    }
+);
+
+</script>
+
+</section>
+
+</main>
+
+<!-- PRODUCT IMAGE VIEWER -->
+
+<div id="imageGallery" class="image-gallery">
+
+    <button id="galleryClose" class="gallery-close">
+        ×
+    </button>
+
+    <img
+        id="galleryImage"
+        src=""
+        alt="Product Image"
+    >
+
+</div>
+
+<script src="script.js"></script>
+<!-- ================= ORDER FORM ================= -->
+
+<div id="orderModal" class="order-modal">
+
+    <div class="order-box">
+
+        <button type="button" id="closeOrderModal" class="order-close">
+            ×
+        </button>
+
+        <h2>Complete Your Order</h2>
+        <p class="order-subtitle">
+            Please enter your delivery details.
+        </p>
+
+        <div class="order-product">
+            <strong>Product:</strong>
+            <span id="orderProductName"></span>
+        </div>
+
+        <label>Customer Name</label>
+        <input
+            type="text"
+            id="customerName"
+            placeholder="Enter your name"
+        >
+
+        <label>Phone Number</label>
+        <input
+            type="tel"
+            id="customerPhone"
+            placeholder="03XX XXXXXXX"
+        >
+
+        <label>Complete Delivery Address</label>
+        <textarea
+            id="deliveryAddress"
+            rows="4"
+            placeholder="House/Shop No., Street, Area, complete address"
+        ></textarea>
+
+        <label>City</label>
+        <input
+            type="text"
+            id="customerCity"
+            placeholder="Enter your city"
+        >
+
+        <div class="payment-title">
+            <h3>Payment</h3>
+            <p>Choose your preferred payment method.</p>
+        </div>
+
+        <div class="payment-options">
+
+            <label class="payment-option">
+                <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Cash on Delivery (COD)"
+                    checked
+                >
+                <span>Cash on Delivery (COD)</span>
+            </label>
+
+            <label class="payment-option">
+                <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Online Payment - 10% Discount"
+                >
+                <span>Pay Online </span>
+            </label>
+
+        </div>
+
+        <div
+            id="onlinePaymentDetails"
+            class="online-payment-details"
+        >
+
+           <p>
+    <strong>Easypaisa Details</strong><br>
+    Account Name: Jawad Sultan<br>
+    Account No: 03497313505
+</p>
+
+<p>
+    For payment confirmation, kindly send your payment details 
+    on our WhatsApp helpline.
+</p>
+
+        </div>
+
+        <button
+            type="button"
+            id="sendOrderWhatsApp"
+            class="send-order-whatsapp"
+        >
+            Send Order on WhatsApp
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+</html>
