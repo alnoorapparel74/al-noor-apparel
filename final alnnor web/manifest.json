@@ -1,0 +1,16 @@
+{
+  "name": "AL NOOR APPAREL",
+  "short_name": "AL NOOR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#f5c542",
+  "description": "AL NOOR APPAREL - Premium Quality Outfits For Every Style",
+"icons": [
+  {
+    "src": "image/logo/logo.png",
+    "sizes": "961x432",
+    "type": "image/png"
+  }
+]
+}

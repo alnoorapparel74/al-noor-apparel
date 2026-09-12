@@ -23,7 +23,7 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <link rel="stylesheet" href="style.css">
-
+<link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -806,48 +806,62 @@ document.addEventListener(
 
            card.innerHTML = `
 
-    <img
-        src="${product.image || ""}"
-        alt="${product.name || ""}"
-    >
+    <img 
+    src="${product.image || ""}" 
+    alt="${product.name || ""}" 
+>
 
-    <h3>
-        ${product.name || ""}
-    </h3>
+<h3>
+    ${product.name || ""}
+</h3>
 
-    <p>
-        ${product.description || ""} 
-    </p>
+<p>
+    ${product.description || ""}
+</p>
 
-    <p>
-        Size:
-        ${product.size || ""}
-    </p>
+<p>
+    Size:
+    ${product.size || ""}
+</p>
 
-    <p>
-        Price:
-        Rs. ${product.price ?? ""}
-    </p>
+<p>
+    Price:
+    Rs. ${product.price ?? ""}
+</p>
 
-    <a
-                    href="https://wa.me/923402787575?text=${encodeURIComponent(
-                        "Hello AL NOOR APPAREL,%0A%0AI want to order: " +
-                        product.name
-                    )}"
-                    class="product-btn"
-                    target="_blank"
-                >
-                    Order Now
-                </a>
+<a
+    href="https://wa.me/923402787575?text=${encodeURIComponent(
+        "Hello AL NOOR APPAREL,%0A%0AI want to order: " +
+        product.name
+    )}"
+    class="product-btn"
+    target="_blank"
+>
+    Order Now
+</a>
 
-            `;
+`;
 
+container.appendChild(card);
 
-            container.appendChild(card);
+});
 
-        });
+/* ===== SLOW AUTOMATIC SLIDER ===== */
 
+setInterval(() => {
+
+    container.scrollLeft += 1;
+
+    if (
+        container.scrollLeft + container.clientWidth >=
+        container.scrollWidth - 2
+    ) {
+        container.scrollLeft = 0;
     }
+
+}, 100);
+
+}
 );
 
 </script>
@@ -1150,5 +1164,10 @@ document.addEventListener(
 
 </div>
 
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js");
+}
+</script>
 </body>
 </html>
