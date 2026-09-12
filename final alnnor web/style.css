@@ -2412,7 +2412,7 @@ textarea {
 
         overscroll-behavior-x: contain;
 
-        touch-action: pan-x;
+       touch-action: pan-x pan-y;
 
         scroll-snap-type: x mandatory;
     }
@@ -3513,4 +3513,25 @@ img {
     object-fit: cover;
     object-position: center;
     display: block;
+}
+
+/* REMOVE YELLOW FOCUS BOX FROM SEARCH */
+.search-box input:focus,
+.search-box input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+/* KEEP HEADER AT TOP WHILE SCROLLING */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 5000;
+}
+/* MOBILE PAGE SCROLL FIX */
+@media (max-width: 768px) {
+
+   .product-card {
+    touch-action: pan-x pan-y;
+}
+
 }
