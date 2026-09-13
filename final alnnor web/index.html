@@ -1164,10 +1164,150 @@ setInterval(() => {
 
 </div>
 
+<!-- ================= APP INSTALL POPUP ================= -->
+
+<div id="installPopup" style="
+    display:none;
+    position:fixed;
+    bottom:20px;
+    left:15px;
+    right:15px;
+    background:#111;
+    border:2px solid #f5c542;
+    border-radius:18px;
+    padding:18px;
+    z-index:99999;
+    color:#fff;
+    text-align:center;
+    box-shadow:0 8px 30px rgba(0,0,0,.6);
+">
+
+    <h3 style="
+        color:#f5c542;
+        margin:0 0 8px;
+        font-size:20px;
+    ">
+        📱 Install AL NOOR APP
+    </h3>
+
+    <p style="
+        margin:0 0 15px;
+        font-size:14px;
+    ">
+        Install our app for a faster shopping experience.
+    </p>
+
+    <button id="installAppBtn" style="
+        background:#f5c542;
+        color:#111;
+        border:none;
+        padding:11px 22px;
+        border-radius:25px;
+        font-weight:bold;
+        cursor:pointer;
+    ">
+        Install App
+    </button>
+
+    <button id="closeInstallPopup" style="
+        background:transparent;
+        color:#fff;
+        border:1px solid #777;
+        padding:10px 18px;
+        border-radius:25px;
+        margin-left:8px;
+        cursor:pointer;
+    ">
+        Later
+    </button>
+
+</div>
+
+
+<!-- ================= PWA INSTALL SCRIPT ================= -->
+
 <script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
+
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", function (e) {
+
+    e.preventDefault();
+
+    deferredPrompt = e;
+
+    if (!localStorage.getItem("alnoorInstallDismissed")) {
+
+        const popup = document.getElementById("installPopup");
+
+        if (popup) {
+            popup.style.display = "block";
+        }
+    }
+});
+
+
+const installButton =
+    document.getElementById("installAppBtn");
+
+if (installButton) {
+
+    installButton.addEventListener("click", async function () {
+
+        if (!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+
+        const choice =
+            await deferredPrompt.userChoice;
+
+        if (choice.outcome === "accepted") {
+
+            localStorage.setItem(
+                "alnoorInstallDismissed",
+                "true"
+            );
+        }
+
+        deferredPrompt = null;
+
+        document.getElementById(
+            "installPopup"
+        ).style.display = "none";
+
+    });
 }
+
+
+const closeButton =
+    document.getElementById("closeInstallPopup");
+
+if (closeButton) {
+
+    closeButton.addEventListener("click", function () {
+
+        localStorage.setItem(
+            "alnoorInstallDismissed",
+            "true"
+        );
+
+        document.getElementById(
+            "installPopup"
+        ).style.display = "none";
+
+    });
+}
+
+
+/* ================= SERVICE WORKER ================= */
+
+if ("serviceWorker" in navigator) {
+
+    navigator.serviceWorker.register("sw.js");
+
+}
+
 </script>
+
 </body>
 </html>
