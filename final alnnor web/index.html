@@ -1236,14 +1236,12 @@ window.addEventListener("beforeinstallprompt", function (e) {
 
     deferredPrompt = e;
 
-    if (!localStorage.getItem("alnoorInstallDismissed")) {
+    const popup = document.getElementById("installPopup");
 
-        const popup = document.getElementById("installPopup");
-
-        if (popup) {
-            popup.style.display = "block";
-        }
+    if (popup) {
+        popup.style.display = "block";
     }
+
 });
 
 
@@ -1261,21 +1259,17 @@ if (installButton) {
         const choice =
             await deferredPrompt.userChoice;
 
-        if (choice.outcome === "accepted") {
-
-            localStorage.setItem(
-                "alnoorInstallDismissed",
-                "true"
-            );
-        }
-
         deferredPrompt = null;
 
-        document.getElementById(
-            "installPopup"
-        ).style.display = "none";
+        const popup =
+            document.getElementById("installPopup");
+
+        if (popup) {
+            popup.style.display = "none";
+        }
 
     });
+
 }
 
 
@@ -1286,24 +1280,31 @@ if (closeButton) {
 
     closeButton.addEventListener("click", function () {
 
-        localStorage.setItem(
-            "alnoorInstallDismissed",
-            "true"
-        );
+        const popup =
+            document.getElementById("installPopup");
 
-        document.getElementById(
-            "installPopup"
-        ).style.display = "none";
+        if (popup) {
+            popup.style.display = "none";
+        }
 
     });
+
 }
 
 
-/* ================= SERVICE WORKER ================= */
+/* Hide popup when running as installed app */
 
-if ("serviceWorker" in navigator) {
+if (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true
+) {
 
-    navigator.serviceWorker.register("sw.js");
+    const popup =
+        document.getElementById("installPopup");
+
+    if (popup) {
+        popup.style.display = "none";
+    }
 
 }
 
