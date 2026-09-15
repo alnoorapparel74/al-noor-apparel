@@ -3535,3 +3535,27 @@ header {
 }
 
 }
+/* ---------- NEW ARRIVALS — NO SWIPE ---------- */
+
+@media (max-width: 768px) {
+
+    .new-arrivals .products-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        scroll-snap-type: none !important;
+        scroll-behavior: auto !important;
+        touch-action: pan-y !important;
+        padding: 5px 0 15px !important;
+        gap: 12px !important;
+    }
+
+    .new-arrivals .products-container > .product-card {
+        width: 100% !important;
+        max-width: none !important;
+        flex: none !important;
+        scroll-snap-align: none !important;
+    }
+
+}

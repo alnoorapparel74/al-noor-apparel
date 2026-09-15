@@ -846,20 +846,6 @@ container.appendChild(card);
 
 });
 
-/* ===== SLOW AUTOMATIC SLIDER ===== */
-
-setInterval(() => {
-
-    container.scrollLeft += 1;
-
-    if (
-        container.scrollLeft + container.clientWidth >=
-        container.scrollWidth - 2
-    ) {
-        container.scrollLeft = 0;
-    }
-
-}, 100);
 
 }
 );
